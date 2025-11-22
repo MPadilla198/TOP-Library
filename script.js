@@ -23,8 +23,18 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary.push(book);
 }
 
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
 function displayBooks() {
-    const body = document.querySelector(".container");
+    const container = document.querySelector(".container");
+
+    // Clear children
+    removeAllChildNodes(container);
+
     for (const book of myLibrary) {
         // Create new card
         const card = document.createElement("div");
@@ -51,7 +61,7 @@ function displayBooks() {
         card.appendChild(read);
 
         // Add card to body
-        body.appendChild(card);
+        container.appendChild(card);
     }
 }
 
@@ -59,3 +69,59 @@ addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, false);
 addBookToLibrary("Charlie and The Chocolate Factory", "Roald Dahl", 192, true);
 
 displayBooks();
+
+const dialog = document.querySelector("dialog");
+const addBookButton = document.querySelector("#add-book");
+const submitButton = document.querySelector("dialog .submit");
+const cancelButton = document.querySelector("dialog .cancel");
+
+// "Show the dialog" button opens the dialog modally
+addBookButton.addEventListener("click", () => {
+    dialog.showModal();
+});
+
+// "Submit" button closes the dialog
+submitButton.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const titleElem = document.getElementById('title');
+    const title = titleElem.value.trim();
+    if (title === ''){
+        alert('Title is required!');
+        return;
+    }
+
+    const authorElem = document.getElementById('author');
+    const author = authorElem.value.trim();
+    if (author === ''){
+        alert('Author is required!');
+        return;
+    }
+
+    const pagesElem = document.getElementById('pages');
+    const pages = pagesElem.value;
+    if (pages < 1) {
+        alert('Pages must be a positive number!');
+        return;
+    }
+
+    const readElem = document.getElementById('read');
+    const read = readElem.checked;
+
+    // reset the input fields
+    titleElem.value = '';
+    authorElem.value = '';
+    pagesElem.value = '';
+    readElem.checked = false;
+
+    // Update library and display books
+    addBookToLibrary(title, author, pages, read);
+    displayBooks();
+
+    dialog.close();
+});
+
+// "Cancel" button closes the dialog
+cancelButton.addEventListener("click", () => {
+    dialog.close();
+});
