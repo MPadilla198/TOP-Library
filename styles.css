@@ -28,3 +28,7 @@ button#add-book {
     flex-direction: column;
     align-items: center;
 }
+
+.card button {
+    margin: 8px;
+}

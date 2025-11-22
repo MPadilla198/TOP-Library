@@ -15,6 +15,10 @@ Book.prototype.info = function () {
     return `${this.title} by ${this.author} ${pages} pages, ${this.read ? "read" : "not read yet"}`;
 }
 
+Book.prototype.toggleRead = function() {
+    this.read = !this.read;
+}
+
 function addBookToLibrary(title, author, pages, read) {
     const uuid = self.crypto.randomUUID();
 
@@ -60,6 +64,15 @@ function displayBooks() {
         read.textContent = book.read ? "read" : "not read yet";
         card.appendChild(read);
 
+        // Create read book toggle button
+        const readButton = document.createElement('button');
+        readButton.textContent = book.read ? 'Mark Not Read' : 'Mark Read';
+        readButton.addEventListener('click', (event) => {
+            book.toggleRead();
+            displayBooks()
+        });
+        card.appendChild(readButton);
+
         // Create remove book button and add to card
         const removeButton = document.createElement('button');
         removeButton.textContent = 'Remove Book From Library';
@@ -75,7 +88,7 @@ function displayBooks() {
             }
 
             displayBooks();
-        })
+        });
         card.appendChild(removeButton);
 
         // Add card to body
