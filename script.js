@@ -60,6 +60,24 @@ function displayBooks() {
         read.textContent = book.read ? "read" : "not read yet";
         card.appendChild(read);
 
+        // Create remove book button and add to card
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove Book From Library';
+        removeButton.dataset.uuid = book.uuid;
+        // Adding an eventlistener to each button is inefficient, should be updated later
+        removeButton.addEventListener('click', (event) => {
+            for (let i = 0; i < myLibrary.length; i++) {
+                const b = myLibrary[i];
+                if (book.uuid === b.uuid) {
+                    myLibrary.splice(i, 1);
+                    break;
+                }
+            }
+
+            displayBooks();
+        })
+        card.appendChild(removeButton);
+
         // Add card to body
         container.appendChild(card);
     }
