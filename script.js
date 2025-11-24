@@ -1,4 +1,28 @@
-const myLibrary = [];
+class Library {
+    constructor() {
+        this.books = [];
+    }
+
+    addBook(title, author, pages, read) {
+        const uuid = self.crypto.randomUUID();
+
+        const book = new Book(uuid, title, author, pages, read);
+
+        this.books.push(book);
+    }
+
+    removeBook(uuid) {
+        for (let i = 0; i < this.books.length; i++) {
+            const b = this.books[i];
+            if (uuid === b.uuid) {
+                this.books.splice(i, 1);
+                break;
+            }
+        }
+    }
+}
+
+const myLibrary = new Library();
 
 class Book {
     constructor(uuid, title, author, pages, read) {
@@ -18,14 +42,6 @@ class Book {
     }
 }
 
-function addBookToLibrary(title, author, pages, read) {
-    const uuid = self.crypto.randomUUID();
-
-    const book = new Book(uuid, title, author, pages, read);
-
-    myLibrary.push(book);
-}
-
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -38,7 +54,7 @@ function displayBooks() {
     // Clear children
     removeAllChildNodes(container);
 
-    for (const book of myLibrary) {
+    for (const book of myLibrary.books) {
         // Create new card
         const card = document.createElement("div");
         card.classList.add("card")
@@ -78,14 +94,7 @@ function displayBooks() {
         removeButton.dataset.uuid = book.uuid;
         // Adding an eventlistener to each button is inefficient, should be updated later
         removeButton.addEventListener('click', (event) => {
-            for (let i = 0; i < myLibrary.length; i++) {
-                const b = myLibrary[i];
-                if (book.uuid === b.uuid) {
-                    myLibrary.splice(i, 1);
-                    break;
-                }
-            }
-
+            myLibrary.removeBook(book.uuid)
             displayBooks();
         });
         card.appendChild(removeButton);
@@ -94,11 +103,6 @@ function displayBooks() {
         container.appendChild(card);
     }
 }
-
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, false);
-addBookToLibrary("Charlie and The Chocolate Factory", "Roald Dahl", 192, true);
-
-displayBooks();
 
 const dialog = document.querySelector("dialog");
 const addBookButton = document.querySelector("#add-book");
@@ -145,7 +149,7 @@ submitButton.addEventListener("click", (event) => {
     readElem.checked = false;
 
     // Update library and display books
-    addBookToLibrary(title, author, pages, read);
+    myLibrary.addBook(title, author, pages, read);
     displayBooks();
 
     dialog.close();
@@ -155,3 +159,8 @@ submitButton.addEventListener("click", (event) => {
 cancelButton.addEventListener("click", () => {
     dialog.close();
 });
+
+// Starter books for example
+myLibrary.addBook("The Hobbit", "J.R.R. Tolkien", 295, false);
+myLibrary.addBook("Charlie and The Chocolate Factory", "Roald Dahl", 192, true);
+displayBooks();
