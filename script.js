@@ -42,17 +42,13 @@ class Book {
     }
 }
 
-function removeAllChildNodes(parent) {
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-}
-
 function displayBooks() {
     const container = document.querySelector(".container");
 
     // Clear children
-    removeAllChildNodes(container);
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
 
     for (const book of myLibrary.books) {
         // Create new card
