@@ -1,22 +1,21 @@
 const myLibrary = [];
 
-function Book(uuid, title, author, pages, read) {
-    if (!new.target) {
-        throw Error("You must use the 'new' operator to call the constructor");
+class Book {
+    constructor(uuid, title, author, pages, read) {
+        this.uuid = uuid;
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
     }
-    this.uuid = uuid;
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-}
 
-Book.prototype.info = function () {
-    return `${this.title} by ${this.author} ${pages} pages, ${this.read ? "read" : "not read yet"}`;
-}
+    info() {
+        return `${this.title} by ${this.author} ${pages} pages, ${this.read ? "read" : "not read yet"}`;
+    }
 
-Book.prototype.toggleRead = function() {
-    this.read = !this.read;
+    toggleRead() {
+        this.read = !this.read;
+    }
 }
 
 function addBookToLibrary(title, author, pages, read) {
@@ -28,9 +27,9 @@ function addBookToLibrary(title, author, pages, read) {
 }
 
 function removeAllChildNodes(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
 }
 
 function displayBooks() {
@@ -117,14 +116,14 @@ submitButton.addEventListener("click", (event) => {
 
     const titleElem = document.getElementById('title');
     const title = titleElem.value.trim();
-    if (title === ''){
+    if (title === '') {
         alert('Title is required!');
         return;
     }
 
     const authorElem = document.getElementById('author');
     const author = authorElem.value.trim();
-    if (author === ''){
+    if (author === '') {
         alert('Author is required!');
         return;
     }
